@@ -1,0 +1,16 @@
+from typing import Final
+
+WIDTH: Final = 1000
+HEIGHT: Final = 700
+TITLE: Final = "BattleShip"
+MUSIC_DURATION: Final = 190
+
+START_FIELD_COORDINATES: Final = 56, 80
+START_ENEMY_FIELD_COORDINATES: Final = 519, 80
+
+CELL_WIDTH: Final = 40
+CELL_HEIGHT: Final = 40
+DISTANCE_CELLS: Final = 2
+
+FIELD_BORDER_COLOR: Final = 0, 0, 0  # RGB
+SHIP_COLOR: Final = 234, 84, 85  # RGB
