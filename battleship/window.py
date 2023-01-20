@@ -1,12 +1,12 @@
 from os import getpid, kill
+from signal import SIGKILL, SIGTERM
 from typing import Optional
-from signal import SIGTERM, SIGKILL
 
+from battleship.config import server
 from battleship.elements import *
 from battleship.objects import *
 from battleship.resources.load import Screen
 from battleship.sockets import Client, data
-from battleship.config import server
 
 
 class BattleShip:
@@ -92,11 +92,15 @@ class BattleShip:
                                 if not check_correct_number(changed_data):
                                     continue
 
-                                self.client.send_message(f"{name} {changed_data}")
+                                self.client.send_message(
+                                    f"{name} {changed_data}"
+                                )
                                 CONFIG.set_property(name, int(changed_data))
 
                 elif self.is_start_server_screen:
-                    click: bool = self.start_server_objects.back.check_click(event)
+                    click: bool = self.start_server_objects.back.check_click(
+                        event
+                    )
 
                     if click:
                         self.is_start_screen = True
@@ -118,9 +122,7 @@ class BattleShip:
             self.clock.tick(60)
 
     def init_fields(self):
-        self.my_field: Field = Field(
-            *CONFIG.START_FIELD_COORDINATES
-        )
+        self.my_field: Field = Field(*CONFIG.START_FIELD_COORDINATES)
         self.enemy_field: EnemyField = EnemyField(
             *CONFIG.START_ENEMY_FIELD_COORDINATES
         )
@@ -200,6 +202,8 @@ class BattleShip:
 
             if selected_ship.end_ship:
                 if not self.is_two_players_start:
-                    self.draw_message = "Ожидание расстановки второго игрока..."
+                    self.draw_message = (
+                        "Ожидание расстановки второго игрока..."
+                    )
                     self.client.send_message("placement finished")
                     return

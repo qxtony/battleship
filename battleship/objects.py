@@ -135,17 +135,19 @@ class ServerMenu:
 
         self.font = pygame.font.Font(None, font_size)
         self.frame = pygame.Rect(
-            x, self.y,
-            CONFIG.WIDTH - self.indent,
-            self.height
+            x, self.y, CONFIG.WIDTH - self.indent, self.height
         )
 
         self.title = self.font.render("Лобби", True, CONFIG.TEXT_COLOR)
         self.ip = self.font.render("IP Address", True, CONFIG.TEXT_COLOR)
-        self.local_ip = self.font.render(f"Локальный IP: {data.SERVER_IP}", True, CONFIG.TEXT_COLOR)
+        self.local_ip = self.font.render(
+            f"Локальный IP: {data.SERVER_IP}", True, CONFIG.TEXT_COLOR
+        )
         self.status = self.font.render("Статус", True, CONFIG.TEXT_COLOR)
 
-        self.connected = self.font.render("Подключен", True, CONFIG.GREEN_COLOR)
+        self.connected = self.font.render(
+            "Подключен", True, CONFIG.GREEN_COLOR
+        )
 
         self.back = Button(
             CONFIG.WIDTH - Screen.BACK.get_width() - self.indent,
@@ -163,14 +165,11 @@ class ServerMenu:
         rounding: int = 5,
     ) -> None:
         pygame.draw.rect(
-            screen,
-            CONFIG.WHITE_COLOR,
-            self.frame,
-            thickness,
-            rounding
+            screen, CONFIG.WHITE_COLOR, self.frame, thickness, rounding
         )
         pygame.draw.line(
-            screen, CONFIG.TEXT_COLOR,
+            screen,
+            CONFIG.TEXT_COLOR,
             (CONFIG.WIDTH / 2 - self.indent, self.y),
             (CONFIG.WIDTH / 2 - self.indent, self.height + self.y - 1),
         )
@@ -180,33 +179,43 @@ class ServerMenu:
             self.local_ip,
             (
                 CONFIG.WIDTH - self.local_ip.get_width() - self.indent,
-                CONFIG.HEIGHT - self.local_ip.get_height() - self.indent
-            )
+                CONFIG.HEIGHT - self.local_ip.get_height() - self.indent,
+            ),
         )
 
         screen.blit(self.ip, (self.indent, self.y))
         screen.blit(
             self.status,
-            (
-                CONFIG.WIDTH - self.status.get_width() - self.indent,
-                self.y
-            )
+            (CONFIG.WIDTH - self.status.get_width() - self.indent, self.y),
         )
 
         pygame.draw.line(
-            screen, CONFIG.TEXT_COLOR,
-            (self.indent - self.indent // 2, self.y + self.title.get_height() + self.indent // 2),
-            (CONFIG.WIDTH - self.indent + self.indent // 2 - 1, self.y + self.title.get_height() + self.indent // 2),
+            screen,
+            CONFIG.TEXT_COLOR,
+            (
+                self.indent - self.indent // 2,
+                self.y + self.title.get_height() + self.indent // 2,
+            ),
+            (
+                CONFIG.WIDTH - self.indent + self.indent // 2 - 1,
+                self.y + self.title.get_height() + self.indent // 2,
+            ),
         )
 
         for counter, user in enumerate(self.users):
             coordinates = (
                 self.indent,
-                self.y + self.title.get_height() + self.indent + counter * user.get_height()
+                self.y
+                + self.title.get_height()
+                + self.indent
+                + counter * user.get_height(),
             )
             coordinates_connect = (
                 CONFIG.WIDTH - self.connected.get_width() - self.indent,
-                self.y + self.title.get_height() + self.indent + counter * user.get_height()
+                self.y
+                + self.title.get_height()
+                + self.indent
+                + counter * user.get_height(),
             )
 
             screen.blit(user, coordinates)
@@ -223,10 +232,13 @@ class GetServerIPMenu:
         self.font = pygame.font.Font(None, font_size)
         indent: int = 40
 
-        self.title = self.font.render("Введите IP-адрес сервера:", True, CONFIG.TEXT_COLOR)
+        self.title = self.font.render(
+            "Введите IP-адрес сервера:", True, CONFIG.TEXT_COLOR
+        )
         x, y = get_center_coordinates(self.title)
         self.get_ip = InputBox(
-            x + indent, y - 3,
+            x + indent,
+            y - 3,
             height=self.title.get_height(),
         )
 

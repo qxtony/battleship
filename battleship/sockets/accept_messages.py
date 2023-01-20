@@ -22,7 +22,7 @@ def check_accept_message(message: str) -> None:
                 game.client.send_message("start game")
 
             game.is_two_players_start = True
-    
+
     elif message == "start game":
         game.draw_message = "Вы начинаете игру."
         game.is_two_players_start = True
@@ -67,9 +67,15 @@ def check_accept_message(message: str) -> None:
                 game.is_my_turn = False
 
                 if ship.health == 0:
-                    orientation = 1 if ship.orientation == "horizontally" else 0
-                    game.client.send_message(f"dead ({ship_x}, {ship_y}, {ship.size}, {orientation})")
-                    game.my_field.dead_ships.append((ship_x, ship_y, ship.size, ship.orientation))
+                    orientation = (
+                        1 if ship.orientation == "horizontally" else 0
+                    )
+                    game.client.send_message(
+                        f"dead ({ship_x}, {ship_y}, {ship.size}, {orientation})"
+                    )
+                    game.my_field.dead_ships.append(
+                        (ship_x, ship_y, ship.size, ship.orientation)
+                    )
 
                     game.enemy_field.ships_counter[ship.size] -= 1
 
@@ -93,18 +99,18 @@ def check_accept_message(message: str) -> None:
     elif message == "miss":
         game.draw_message = "Ход противника."
         game.enemy_field.marks.append("dot")
-    
+
     elif message.startswith("dead"):
         data = eval(message.split("dead")[1])
         game.draw_message = "Ваш ход."
         game.is_my_turn = True
         game.enemy_field.dead_ships.append(data)
-    
+
     elif message == "game over":
         game.draw_message = "Вы победили!"
 
 
 def accept_messages() -> None:
     while True:
-        message = game.client.accept_messages().decode('utf-8')
+        message = game.client.accept_messages().decode("utf-8")
         check_accept_message(message)

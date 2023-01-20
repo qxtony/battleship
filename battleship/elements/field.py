@@ -1,4 +1,4 @@
-from pygame import Surface, draw, Rect
+from pygame import Rect, Surface, draw
 
 from battleship.config import CONFIG
 from battleship.elements.draw import draw_field_from_squares
@@ -36,10 +36,16 @@ class Field:
                 screen,
                 CONFIG.SHIP_COLOR,
                 (
-                    self.start_x + x * CONFIG.CELL_SIZE + x * CONFIG.DISTANCE_CELLS + CONFIG.CELL_SIZE // 2,
-                    self.start_y + y * CONFIG.CELL_SIZE + y * CONFIG.DISTANCE_CELLS + CONFIG.CELL_SIZE // 2,
+                    self.start_x
+                    + x * CONFIG.CELL_SIZE
+                    + x * CONFIG.DISTANCE_CELLS
+                    + CONFIG.CELL_SIZE // 2,
+                    self.start_y
+                    + y * CONFIG.CELL_SIZE
+                    + y * CONFIG.DISTANCE_CELLS
+                    + CONFIG.CELL_SIZE // 2,
                 ),
-                2
+                2,
             )
 
         for x, y in self.field_cross:
@@ -51,14 +57,14 @@ class Field:
                 CONFIG.SHIP_COLOR,
                 (x, y),
                 (x + CONFIG.CELL_SIZE - 1, y + CONFIG.CELL_SIZE - 1),
-                2
+                2,
             )
             draw.line(
                 screen,
                 CONFIG.SHIP_COLOR,
                 (x + CONFIG.CELL_SIZE - 1, y + 1),
                 (x, y + CONFIG.CELL_SIZE - 1),
-                2
+                2,
             )
 
         for x, y, size, orientation in self.dead_ships:
@@ -70,24 +76,34 @@ class Field:
                     screen,
                     CONFIG.SHIP_COLOR,
                     (
-                        self.start_x + x * CONFIG.CELL_SIZE + x * CONFIG.DISTANCE_CELLS,
-                        self.start_y + y * CONFIG.CELL_SIZE + y * CONFIG.DISTANCE_CELLS,
-                        CONFIG.CELL_SIZE * size + CONFIG.DISTANCE_CELLS * (size - 1),
-                        CONFIG.CELL_SIZE
+                        self.start_x
+                        + x * CONFIG.CELL_SIZE
+                        + x * CONFIG.DISTANCE_CELLS,
+                        self.start_y
+                        + y * CONFIG.CELL_SIZE
+                        + y * CONFIG.DISTANCE_CELLS,
+                        CONFIG.CELL_SIZE * size
+                        + CONFIG.DISTANCE_CELLS * (size - 1),
+                        CONFIG.CELL_SIZE,
                     ),
-                    1
+                    1,
                 )
             else:
                 draw.rect(
                     screen,
                     CONFIG.SHIP_COLOR,
                     (
-                        self.start_x + x * CONFIG.CELL_SIZE + x * CONFIG.DISTANCE_CELLS,
-                        self.start_y + y * CONFIG.CELL_SIZE + y * CONFIG.DISTANCE_CELLS,
+                        self.start_x
+                        + x * CONFIG.CELL_SIZE
+                        + x * CONFIG.DISTANCE_CELLS,
+                        self.start_y
+                        + y * CONFIG.CELL_SIZE
+                        + y * CONFIG.DISTANCE_CELLS,
                         CONFIG.CELL_SIZE,
-                        CONFIG.CELL_SIZE * size + CONFIG.DISTANCE_CELLS * (size - 1)
+                        CONFIG.CELL_SIZE * size
+                        + CONFIG.DISTANCE_CELLS * (size - 1),
                     ),
-                    1
+                    1,
                 )
 
     def draw(self, screen: Surface) -> None:
@@ -124,7 +140,11 @@ class EnemyField:
         }
         self.attacks = []
         self.marks = []
-        self.attacks.append(Rect(self.start_x, self.start_y, CONFIG.CELL_SIZE, CONFIG.CELL_SIZE))
+        self.attacks.append(
+            Rect(
+                self.start_x, self.start_y, CONFIG.CELL_SIZE, CONFIG.CELL_SIZE
+            )
+        )
         self.marks.append("none")
         self.dead_ships = []
 
@@ -134,7 +154,7 @@ class EnemyField:
 
     def draw_ships(self, screen: Surface) -> None:
         for position, (mark, cell) in enumerate(zip(self.marks, self.attacks)):
-            previous_ship = self.attacks[position-1]
+            previous_ship = self.attacks[position - 1]
 
             if mark == "cross":
                 self.draw_cross(screen, previous_ship)
@@ -157,50 +177,60 @@ class EnemyField:
                     screen,
                     CONFIG.DELIVERED_SHIP_COLOR,
                     (
-                        self.start_x + x * CONFIG.CELL_SIZE + x * CONFIG.DISTANCE_CELLS,
-                        self.start_y + y * CONFIG.CELL_SIZE + y * CONFIG.DISTANCE_CELLS,
-                        CONFIG.CELL_SIZE * size + CONFIG.DISTANCE_CELLS * (size - 1),
-                        CONFIG.CELL_SIZE
+                        self.start_x
+                        + x * CONFIG.CELL_SIZE
+                        + x * CONFIG.DISTANCE_CELLS,
+                        self.start_y
+                        + y * CONFIG.CELL_SIZE
+                        + y * CONFIG.DISTANCE_CELLS,
+                        CONFIG.CELL_SIZE * size
+                        + CONFIG.DISTANCE_CELLS * (size - 1),
+                        CONFIG.CELL_SIZE,
                     ),
-                    1
+                    1,
                 )
             else:
                 draw.rect(
                     screen,
                     CONFIG.DELIVERED_SHIP_COLOR,
                     (
-                        self.start_x + x * CONFIG.CELL_SIZE + x * CONFIG.DISTANCE_CELLS,
-                        self.start_y + y * CONFIG.CELL_SIZE + y * CONFIG.DISTANCE_CELLS,
+                        self.start_x
+                        + x * CONFIG.CELL_SIZE
+                        + x * CONFIG.DISTANCE_CELLS,
+                        self.start_y
+                        + y * CONFIG.CELL_SIZE
+                        + y * CONFIG.DISTANCE_CELLS,
                         CONFIG.CELL_SIZE,
-                        CONFIG.CELL_SIZE * size + CONFIG.DISTANCE_CELLS * (size - 1)
+                        CONFIG.CELL_SIZE * size
+                        + CONFIG.DISTANCE_CELLS * (size - 1),
                     ),
-                    1
+                    1,
                 )
 
     def up(self, check: bool = True) -> None:
         current_cell = self.attacks[-1]
-        current_cell.y -= (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
+        current_cell.y -= CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
 
         if check:
             self.check_for_going_over_edges()
 
     def down(self, check: bool = True) -> None:
         current_cell = self.attacks[-1]
-        current_cell.y += (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
+        current_cell.y += CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
 
         if check:
             self.check_for_going_over_edges()
 
     def right(self, check: bool = True) -> None:
         current_cell = self.attacks[-1]
-        current_cell.x += (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
+        current_cell.x += CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
 
         if check:
             self.check_for_going_over_edges()
 
     def left(self, check: bool = True) -> None:
         current_cell = self.attacks[-1]
-        current_cell.x -= (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
+        current_cell.x -= CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
 
         if check:
             self.check_for_going_over_edges()
@@ -209,12 +239,17 @@ class EnemyField:
         for cell in self.attacks:
             if cell not in self.attacks[:-1]:
                 client.send_message(f"attack {self.get_coordinates()}")
-                self.attacks.append(Rect(cell.x, cell.y, CONFIG.CELL_SIZE, CONFIG.CELL_SIZE))
-
+                self.attacks.append(
+                    Rect(cell.x, cell.y, CONFIG.CELL_SIZE, CONFIG.CELL_SIZE)
+                )
 
     def get_coordinates(self) -> tuple[int, int]:
-        x: int = (self.attacks[-1].x - self.start_x) // (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
-        y: int = (self.attacks[-1].y - self.start_y) // (CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS)
+        x: int = (self.attacks[-1].x - self.start_x) // (
+            CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
+        )
+        y: int = (self.attacks[-1].y - self.start_y) // (
+            CONFIG.CELL_SIZE + CONFIG.DISTANCE_CELLS
+        )
         return x, y
 
     def check_for_going_over_edges(self) -> None:
@@ -222,7 +257,7 @@ class EnemyField:
 
         if cell_x > CONFIG.MAX_CELLS_IN_LINE - 1:
             self.left(check=False)
-        
+
         elif cell_y > CONFIG.MAX_CELLS_IN_LINE - 1:
             self.up(check=False)
 
@@ -238,7 +273,7 @@ class EnemyField:
             CONFIG.DELIVERED_SHIP_COLOR,
             (cell.x, cell.y),
             (cell.x + CONFIG.CELL_SIZE - 1, cell.y + CONFIG.CELL_SIZE - 1),
-            2
+            2,
         )
 
         draw.line(
@@ -246,7 +281,7 @@ class EnemyField:
             CONFIG.DELIVERED_SHIP_COLOR,
             (cell.x + CONFIG.CELL_SIZE - 1, cell.y + 1),
             (cell.x + 1, cell.y + CONFIG.CELL_SIZE - 1),
-            2
+            2,
         )
 
     def draw_dot(self, screen: Surface, cell: Surface) -> None:
@@ -254,5 +289,5 @@ class EnemyField:
             screen,
             CONFIG.SHIP_COLOR,
             (cell.x + CONFIG.CELL_SIZE // 2, cell.y + CONFIG.CELL_SIZE // 2),
-            2
+            2,
         )
