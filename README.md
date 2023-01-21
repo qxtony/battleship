@@ -21,3 +21,6 @@ To start the program, enter the following:
 ```sh
 python -m battleship
 ```
+
+_The control is carried out by the keys W A S D._
+_Put the ship on Enter._
