@@ -155,6 +155,11 @@ class BattleShip:
             self.enemy_field.draw(self.screen)
 
             self.my_field.draw_ships(self.screen)
+
+            draw_letters_and_numbers(self.screen, *CONFIG.START_FIELD_COORDINATES)
+            draw_letters_and_numbers(
+                self.screen, *CONFIG.START_ENEMY_FIELD_COORDINATES
+            )
             draw_message(self.screen, self.draw_message)
 
             if self.is_two_players_start:

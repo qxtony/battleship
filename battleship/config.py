@@ -34,6 +34,7 @@ class Config:
         self.WHITE_COLOR: Final = (156, 167, 173)  # RGB
         self.GREEN_COLOR: Final = (23, 185, 120)  # RGB
         self.BLUE_COLOR: Final = (44, 133, 143)  # RGB
+        self.LETTERS_COLOR: Final = (82, 97, 107)  # RGB
 
     def set_property(self, property_name: str, value: int) -> None:
         setattr(self, property_name, value)
