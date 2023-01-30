@@ -23,5 +23,5 @@ python -m battleship
 ```
 
 _The control is carried out by the keys W A S D._</br>
-_Change the orientation of the ship to the space._
+_Change the orientation of the ship to the space._</br>
 _Put the ship on Enter._
